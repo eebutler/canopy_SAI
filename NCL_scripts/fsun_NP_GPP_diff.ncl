@@ -14,7 +14,6 @@ year_begin = 1980
 year_end   = 2009
 nyear = year_end - year_begin + 1
 output_name = "fsun_NP_GPP_diff"+year_begin +"_"+year_end
-;title_name = "GPP year "+year_begin+ " to year " + year_end +" (new_fsun-default)"
 title_name = "GPP difference (New Fsun - Default)"
 
 GPP_control         = new((/96,144,nyear/),double)
@@ -27,16 +26,19 @@ diff_AVG_GPP        = new((/96,144/),double)
 Areasum_control_GPP = new((/96,144/),double)
 Areasum_compare_GPP    = new((/96,144/),double)
 
+; removed path references to initial model output
+; figures may be generated using smaller saved .txt files 
+
 do year=year_begin,year_end,1
   n=year-year_begin
 
   do month=1,12
 
-     fname1 = "/home/reichpb/eebutler/fsun/ACME_v0_NP/global_v0_wP_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
+     fname1 = "model_path/global_v0_wP_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
      f1 = addfile(fname1,"r")
      GPP_control_monthly(:,:,(month-1))=f1->GPP(0,:,:)
 
-     fname2 = "/home/reichpb/eebutler/fsun/ACME_v0_NP_fsun/global_v0_wP_fsun_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
+     fname2 = "model_path/global_v0_wP_fsun_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
      f2 = addfile(fname2,"r")
      GPP_compare_monthly(:,:,(month-1))=f2->GPP(0,:,:)
 
