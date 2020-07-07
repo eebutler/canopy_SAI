@@ -67,7 +67,7 @@ Nscaler_osun = nscaler_osun/(Fsun*lai)
 Nscaler_osha = nscaler_osha/((1-Fsun)*lai)
 
 ## new Fsun
-Fsun_new = (1-np.exp(-kb*lai))*(1-np.exp(-kb*sai))/(kb*kb*sai*lai)
+Fsun_new = (1-np.exp(-kb*lai))*(1-np.exp(-kb*sai))/(kb*kb*(sai+lai))
 
 Nscaler_sun = ( ((1-np.exp(-kb*sai))/kb) * (1-np.exp(-(kn+kb)*lai))/(kn+kb) )/(Fsun_new*lai*sai) 
 Nscaler_sha = ( sai*( 1-np.exp(-kn*lai) )/kn - \
@@ -95,7 +95,7 @@ plt.plot(lai,Nscaler_osun,'g--',label='old sun')
 plt.plot(lai,Nscaler_osha,'b--',label='old shade')
 plt.plot(lai,Nscaler_sun,'g',label='new sun')
 plt.plot(lai,Nscaler_sha,'b',label='new shade')
-plt.plot(lai,Nscaler_whole,'r',label='whole canopy')
+plt.plot(lai,Nscaler_whole,'r:',label='whole canopy')
 plt.xlabel('LAI')
 plt.ylabel('N$_{a}$')
 plt.legend()

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 tveg = np.loadtxt('avg_tveg.txt')
-gpp = np.loadtxt('avg_gpp.txt')
+gpp = np.loadtxt('avg_gpp_g.txt')
 
 # transform to vectors
 tveg = np.ravel(tveg)

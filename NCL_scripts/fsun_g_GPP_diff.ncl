@@ -13,7 +13,8 @@ begin
 year_begin = 1980
 year_end   = 2009
 nyear = year_end - year_begin + 1
-output_name = "fsun_NP_GPP_diff"+year_begin +"_"+year_end
+output_name = "fsun_g_GPP_diff"+year_begin +"_"+year_end
+;title_name = "GPP year "+year_begin+ " to year " + year_end +" (new_fsun-default)"
 title_name = "GPP difference (New Fsun - Default)"
 
 GPP_control         = new((/96,144,nyear/),double)
@@ -26,19 +27,16 @@ diff_AVG_GPP        = new((/96,144/),double)
 Areasum_control_GPP = new((/96,144/),double)
 Areasum_compare_GPP    = new((/96,144/),double)
 
-; removed path references to initial model output
-; figures may be generated using smaller saved .txt files 
-
 do year=year_begin,year_end,1
   n=year-year_begin
 
   do month=1,12
 
-     fname1 = "model_path/global_v0_wP_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
+     fname1 = "/home/reichpb/eebutler/github/E3SM/run/global2_480_v1_f19_f19_ICB20TRCNPRDCTCBC/run/global2_480_v1_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
      f1 = addfile(fname1,"r")
      GPP_control_monthly(:,:,(month-1))=f1->GPP(0,:,:)
 
-     fname2 = "model_path/global_v0_wP_fsun_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
+     fname2 = "/home/reichpb/eebutler/github/E3SM/run/fsun_g_v1_f19_f19_ICB20TRCNPRDCTCBC/run/fsun_g_v1_f19_f19_ICB20TRCNPRDCTCBC.clm2.h0."+ sprinti("%0.4d",year) + "-" + sprinti("%0.2d",month) +".nc"
      f2 = addfile(fname2,"r")
      GPP_compare_monthly(:,:,(month-1))=f2->GPP(0,:,:)
 
@@ -78,14 +76,14 @@ Total_compare_GPP    = sum(Areasum_compare_GPP)/10e15;
 print(Total_control_GPP);
 print(Total_compare_GPP);
 diff_AVG_GPP(:,:) = f1->GPP(0,:,:)   ;trick to get the attribution
-diff_AVG_GPP@units     = "[gC/m:S:2:N:yr]"
+diff_AVG_GPP@units     = "[gC/m~S~2~N~yr]"
 diff_AVG_GPP@long_name = "gross primary production"
 
 diff_AVG_GPP = GPP_compare_AVG - GPP_control_AVG
 
 diff_AVG_GPP@_FillValue           = -999.
 opt = True
-opt@fout = "avg_gpp.txt"
+opt@fout = "avg_gpp_g.txt"
 write_matrix(diff_AVG_GPP,"144f9.2",opt)
  
 ;************************************************
@@ -104,15 +102,15 @@ write_matrix(diff_AVG_GPP,"144f9.2",opt)
     res@lbLabelBarOn        = False            ; turn off individual label bars
     res@mpFillOn            = False            ; no need   
     res@cnLevelSelectionMode= "ManualLevels"   ; manual set levels
-    res@cnMinLevelValF      = -300.
-    res@cnMaxLevelValF      = 300.
+    res@cnMinLevelValF      = -250.
+    res@cnMaxLevelValF      = 250.
     res@cnLevelSpacingF     = 30              	; 15 contour levels        
     res@cnFillOn            = True            	; color fill plot
     res@cnLinesOn           = False
     res@cnLineLabelsOn      = False
     res@cnInfoLabelOn       = False
     res@gsnZonalMean        = True             	; put zonal on side
-    res@gsnZonalMeanXMinF   = -350.		; set minimum X-axis value for zonal mean plot  
+    res@gsnZonalMeanXMinF   = -200.		; set minimum X-axis value for zonal mean plot  
     res@gsnZonalMeanXMaxF   = 0.		; set maximum X-axis value for zonal mean plot  
     res@gsnAddCyclic          = True    	; data already has cyclic point
 
